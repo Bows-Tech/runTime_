@@ -5,22 +5,21 @@ import { useCart } from './cart-provider';
 import { formatPrice, type Locale } from '@/i18n/config';
 import type { Dictionary } from '@/i18n/dictionaries';
 
+/**
+ * Si PayPal está disponible. Lo decide el servidor y llega como prop:
+ * NEXT_PUBLIC_* se incrusta al compilar, así que leerlo en el cliente
+ * obligaría a redesplegar cada vez que se cambian las credenciales.
+ */
+export type PayPalReady = boolean;
+
 type Props = {
   dict: Dictionary['cart'];
   locale: Locale;
   onClose: () => void;
+  paypalReady?: PayPalReady;
 };
 
-/** Datos bancarios que se muestran al comprador. */
-export type BankInfo = {
-  banco: string;
-  tipoCuenta: string;
-  numero: string;
-  titular: string;
-  whatsapp?: string;
-};
-
-export function CheckoutPanel({ dict, locale, onClose }: Props) {
+export function CheckoutPanel({ dict, locale, onClose, paypalReady = false }: Props) {
   const { items, subtotal, clear } = useCart();
   const es = locale === 'es';
 
@@ -112,15 +111,17 @@ export function CheckoutPanel({ dict, locale, onClose }: Props) {
         >
           {es ? 'Transferencia' : 'Bank transfer'}
         </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={method === 'paypal'}
-          className={method === 'paypal' ? 'active' : ''}
-          onClick={() => setMethod('paypal')}
-        >
-          {dict.pago_paypal}
-        </button>
+        {paypalReady && (
+          <button
+            type="button"
+            role="tab"
+            aria-selected={method === 'paypal'}
+            className={method === 'paypal' ? 'active' : ''}
+            onClick={() => setMethod('paypal')}
+          >
+            {dict.pago_paypal}
+          </button>
+        )}
       </div>
 
       {method === 'transferencia' && (

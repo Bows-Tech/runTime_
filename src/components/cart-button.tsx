@@ -11,11 +11,13 @@ export function CartButton({
   navLabel,
   removeLabel,
   locale,
+  paypalReady = false,
 }: {
   dict: Dictionary['cart'];
   navLabel: string;
   removeLabel: string;
   locale: Locale;
+  paypalReady?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [checkingOut, setCheckingOut] = useState(false);
@@ -83,7 +85,12 @@ export function CartButton({
         </div>
 
         {checkingOut && (
-          <CheckoutPanel dict={dict} locale={locale} onClose={() => setCheckingOut(false)} />
+          <CheckoutPanel
+            dict={dict}
+            locale={locale}
+            onClose={() => setCheckingOut(false)}
+            paypalReady={paypalReady}
+          />
         )}
       </div>
     </div>

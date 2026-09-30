@@ -23,9 +23,21 @@ export default async function SiteLayout({
   const locale = isLocale(raw) ? raw : 'es';
   const dict = getDictionary(locale);
 
+  // Leemos esto en el servidor, no en el cliente: las variables
+  // NEXT_PUBLIC_* se incrustan al compilar, así que desde el navegador
+  // solo cambiarían tras un redespliegue.
+  const paypalReady = Boolean(
+    process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID && process.env.PAYPAL_SECRET,
+  );
+
   return (
     <CartProvider>
-      <SiteHeader locale={locale} dict={dict.nav} cartDict={dict.cart} />
+      <SiteHeader
+        locale={locale}
+        dict={dict.nav}
+        cartDict={dict.cart}
+        paypalReady={paypalReady}
+      />
       <main>{children}</main>
       <SiteFooter locale={locale} dict={dict.footer} />
       <CookieBanner locale={locale} />

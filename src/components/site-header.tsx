@@ -12,10 +12,12 @@ export function SiteHeader({
   locale,
   dict,
   cartDict,
+  paypalReady = false,
 }: {
   locale: Locale;
   dict: Dictionary['nav'];
   cartDict: Dictionary['cart'];
+  paypalReady?: boolean;
 }) {
   const pathname = usePathname();
   const base = `/${locale}`;
@@ -68,6 +70,7 @@ export function SiteHeader({
             navLabel={dict.carrito}
             removeLabel={cartDict.quitar}
             locale={locale}
+            paypalReady={paypalReady}
           />
 
           <label htmlFor="menu-toggle" className="menu-toggle-label">
