@@ -1631,3 +1631,8 @@ input:focus-visible {
     padding: 40px 20px 72px;
   }
 }
+
+/* Badge dentro del bloque "próximo lanzamiento" */
+.split-copy .file-badge {
+  margin: 0 0 16px;
+}

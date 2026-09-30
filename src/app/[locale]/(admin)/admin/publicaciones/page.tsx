@@ -26,16 +26,21 @@ export default async function AdminPublicacionesPage({
     .select('id, slug, title, status, published_at, updated_at')
     .order('updated_at', { ascending: false });
 
+  const mostrarForm = nueva === '1';
+
   return (
     <div className="admin-page">
       <div className="admin-page-head">
         <h1>{dict.admin.publicaciones}</h1>
-        <a href="?nueva=1" className="btn-admin btn-admin--primary">
-          {dict.admin.publicacion.crear}
-        </a>
+        {/* Igual que en scripts: el botón desaparece con el formulario. */}
+        {!mostrarForm && (
+          <a href="?nueva=1" className="btn-admin btn-admin--primary">
+            {dict.admin.publicacion.crear}
+          </a>
+        )}
       </div>
 
-      {nueva === '1' && <PublicationForm dict={dict} locale={locale} />}
+      {mostrarForm && <PublicationForm dict={dict} locale={locale} />}
 
       <div className="admin-card">
         <table className="admin-table">

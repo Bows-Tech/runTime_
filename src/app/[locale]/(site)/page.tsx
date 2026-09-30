@@ -4,9 +4,19 @@ import { formatPrice, type Locale } from '@/i18n/config';
 import { pickTranslation } from '@/lib/supabase/database.types';
 import { AddToCartButton } from '@/components/add-to-cart-button';
 import { NewsletterForm } from '@/components/newsletter-form';
+import { getHomePublication } from '@/lib/publications';
 import { SubscribeButton } from '@/components/subscribe-button';
 
 export const revalidate = 60;
+
+// Contenido de ejemplo de la terminal cuando no hay publicación.
+const EJEMPLO_TERMINAL_TITULO = 'devops-suite — preview';
+const EJEMPLO_TERMINAL = [
+  'deploy --canary 10%',
+  'Desplegando canary release...',
+  'Salud del servicio: nominal',
+  'Escalando a 100%... ok',
+];
 
 export default async function HomePage({
   params,
@@ -27,6 +37,10 @@ export default async function HomePage({
 
   const cards = scripts ?? [];
   const featured = cards.slice(0, 4);
+
+  // Bloque "próximo lanzamiento". Si no hay publicación publicada,
+  // devuelve null y la sección cae a los textos de ejemplo.
+  const pub = await getHomePublication(locale);
 
   const categories = [
     { n: '01', title: 'Automatización', es: 'Tareas repetitivas, resueltas.', en: 'Repetitive tasks, solved.' },
@@ -137,9 +151,12 @@ export default async function HomePage({
       <section className="section" id="proximamente">
         <div className="wrap split">
           <div className="split-copy">
-            <p className="eyebrow">{dict.proximamente.eyebrow}</p>
-            <h2>{dict.proximamente.titulo}</h2>
-            <p>{dict.proximamente.texto}</p>
+            {/* Sin publicaciones, se muestran los textos del diccionario:
+                la sección nunca queda vacía ni depende de la base. */}
+            <p className="eyebrow">{pub?.eyebrow ?? dict.proximamente.eyebrow}</p>
+            <h2>{pub?.title || dict.proximamente.titulo}</h2>
+            <p>{pub?.subtitle || dict.proximamente.texto}</p>
+            {pub?.badge && <span className="file-badge">{pub.badge}</span>}
             <SubscribeButton label={dict.proximamente.avisar} />
           </div>
 
@@ -148,19 +165,22 @@ export default async function HomePage({
               <span className="dot" />
               <span className="dot" />
               <span className="dot" />
-              <span className="terminal-title">devops-suite — preview</span>
+              <span className="terminal-title">
+                {pub?.terminalTitle ?? EJEMPLO_TERMINAL_TITULO}
+              </span>
             </div>
             <div className="terminal-body">
-              <div>
-                <span className="prompt">$</span> <span className="cmd">deploy --canary 10%</span>
-              </div>
-              <div className="out">Desplegando canary release...</div>
-              <div className="out">
-                Salud del servicio: <span className="ok">nominal</span>
-              </div>
-              <div className="out">
-                Escalando a 100%... <span className="ok">ok</span>
-              </div>
+              {(pub?.terminalLines ?? EJEMPLO_TERMINAL).map((linea, i) => (
+                <div key={i} className="out">
+                  {i === 0 ? (
+                    <>
+                      <span className="prompt">$</span> <span className="cmd">{linea}</span>
+                    </>
+                  ) : (
+                    linea
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </div>
