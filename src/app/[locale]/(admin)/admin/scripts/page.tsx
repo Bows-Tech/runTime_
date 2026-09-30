@@ -25,20 +25,37 @@ export default async function AdminScriptsPage({
   const { data: scripts } = await supabase
     .from('scripts')
     .select(
-      'id, slug, name, extension, price_cents, status, sales_count, download_count, description, file_path',
+      'id, slug, name, extension, price_cents, status, sales_count, download_count, description, file_path, category',
     )
     .order('created_at', { ascending: false });
+
+  // Las categorías son las que ya usa algún script. Así el desplegable
+  // ofrece lo que existe de verdad en vez de una lista fija en el
+  // código que se desincroniza.
+  const categories = [
+    ...new Set((scripts ?? []).map((s) => s.category).filter(Boolean)),
+  ] as string[];
+  categories.sort((a, b) => a.localeCompare(b));
+
+  const mostrarForm = nuevo === '1';
 
   return (
     <div className="admin-page">
       <div className="admin-page-head">
         <h1>{dict.admin.scripts}</h1>
-        <a href={`?nuevo=1`} className="btn-admin btn-admin--primary">
-          {dict.admin.script.crear}
-        </a>
+        {/* El botón se oculta mientras el formulario está abierto: si no,
+            queda el botón "Nuevo" encima del formulario. El enlace vacío
+            (`?`) es lo que lo cierra. */}
+        {!mostrarForm && (
+          <a href="?nuevo=1" className="btn-admin btn-admin--primary">
+            {dict.admin.script.crear}
+          </a>
+        )}
       </div>
 
-      {nuevo === '1' && <ScriptForm dict={dict} locale={locale} />}
+      {mostrarForm && (
+        <ScriptForm dict={dict} locale={locale} categories={categories} />
+      )}
 
       <div className="admin-card">
         <table className="admin-table">

@@ -28,12 +28,18 @@ export default async function EditScriptPage({
 
   const desc = (script.description ?? {}) as Record<string, string>;
 
+  // Mismas categorías que el desplegable del formulario nuevo.
+  const { data: todos } = await supabase.from('scripts').select('category');
+  const categories = [...new Set((todos ?? []).map((s) => s.category).filter(Boolean))] as string[];
+  categories.sort((a, b) => a.localeCompare(b));
+
   return (
     <div className="admin-page">
       <h1>{dict.admin.script.editar}</h1>
       <ScriptForm
         dict={dict}
         locale={locale}
+        categories={categories}
         initial={{
           id: script.id,
           name: script.name,

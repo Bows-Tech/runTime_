@@ -29,6 +29,12 @@ export async function PATCH(
   if (typeof body.name === 'string' && body.name.trim()) patch.name = body.name.trim();
   if (typeof body.slug === 'string' && body.slug.trim()) patch.slug = body.slug.trim();
 
+  // La categoría se puede cambiar o crear desde el desplegable. Vacía se
+  // ignora en vez de dejar el script sin clasificar.
+  if (typeof body.category === 'string' && body.category.trim()) {
+    patch.category = body.category.trim().slice(0, 40);
+  }
+
   if (body.priceCents !== undefined) {
     const cents = Number(body.priceCents);
     if (!Number.isInteger(cents) || cents < 0) {

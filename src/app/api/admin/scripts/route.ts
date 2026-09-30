@@ -14,12 +14,22 @@ export async function POST(request: Request) {
   const name = typeof body.name === 'string' ? body.name.trim() : '';
   const slug = typeof body.slug === 'string' ? body.slug.trim() : '';
   const priceCents = Number(body.priceCents);
+  const category = typeof body.category === 'string' ? body.category.trim() : '';
 
   if (!name || !slug) {
     return NextResponse.json({ error: 'Nombre y slug son obligatorios' }, { status: 400 });
   }
   if (!Number.isInteger(priceCents) || priceCents < 0) {
     return NextResponse.json({ error: 'Precio inválido' }, { status: 400 });
+  }
+  // Sin categoría el script se iría a "sin clasificar", que no sirve para
+  // filtrar en la tienda. El desplegable puede dejar el campo vacío
+  // cuando se elige "+ Nueva" y aún no se escribe el nombre.
+  if (!category) {
+    return NextResponse.json(
+      { error: 'Elige una categoría o crea una nueva' },
+      { status: 400 },
+    );
   }
 
   const supabase = await createClient();
@@ -31,7 +41,7 @@ export async function POST(request: Request) {
       slug,
       extension: (body.extension || 'py').toString().slice(0, 8),
       price_cents: priceCents,
-      category: (body.category || 'herramientas').toString().slice(0, 40),
+      category: category.slice(0, 40),
       description: {
         es: body.descriptionEs ?? '',
         en: body.descriptionEn ?? '',

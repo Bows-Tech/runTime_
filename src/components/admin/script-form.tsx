@@ -8,6 +8,8 @@ import type { Locale } from '@/i18n/config';
 type Props = {
   dict: Dictionary;
   locale: Locale;
+  /** Categorías que ya existen en la tienda, para el desplegable. */
+  categories?: string[];
   initial?: {
     id?: string;
     name: string;
@@ -20,6 +22,8 @@ type Props = {
   };
 };
 
+const NUEVA = '__nueva__';
+
 const empty = {
   name: '',
   slug: '',
@@ -30,13 +34,23 @@ const empty = {
   category: 'herramientas',
 };
 
-export function ScriptForm({ dict, locale, initial }: Props) {
+export function ScriptForm({ dict, locale, categories = [], initial }: Props) {
   const router = useRouter();
   const [form, setForm] = useState({ ...empty, ...initial });
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const es = locale === 'es';
 
   const isEdit = Boolean(initial?.id);
+
+  // Al editar, la categoría del script puede no estar en la lista (si
+  // se borró el último script que la usaba). Se añade para que el
+  // desplegable no la pierda en silencio.
+  const opciones = [...categories];
+  if (form.category && !opciones.includes(form.category)) {
+    opciones.push(form.category);
+  }
+  opciones.sort((a, b) => a.localeCompare(b));
 
   function set<K extends keyof typeof form>(key: K, value: string) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -118,9 +132,38 @@ export function ScriptForm({ dict, locale, initial }: Props) {
         </label>
         <label className="field">
           <span>{dict.admin.script.categoria}</span>
-          <input value={form.category} onChange={(e) => set('category', e.target.value)} />
+          <select
+            value={form.category === NUEVA ? NUEVA : form.category}
+            onChange={(e) => {
+              const v = e.target.value;
+              // Al elegir "nueva" se vacía el valor para que la caja de
+              // texto de abajo sea la que manda, y no un marcador.
+              set('category', v === NUEVA ? '' : v);
+            }}
+          >
+            {opciones.length === 0 && <option value="">{es ? 'Sin categorías' : 'No categories'}</option>}
+            {opciones.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+            <option value={NUEVA}>+ {es ? 'Nueva categoría' : 'New category'}</option>
+          </select>
         </label>
       </div>
+
+      {/* Solo aparece al pedir una categoría nueva. */}
+      {!opciones.includes(form.category) && (
+        <label className="field">
+          <span>{es ? 'Nombre de la nueva categoría' : 'New category name'}</span>
+          <input
+            value={opciones.includes(form.category) ? '' : form.category}
+            onChange={(e) => set('category', e.target.value)}
+            placeholder={es ? 'Ej: backups' : 'e.g. backups'}
+            required
+          />
+        </label>
+      )}
 
       <label className="field">
         <span>{dict.admin.script.descripcion} (ES)</span>
