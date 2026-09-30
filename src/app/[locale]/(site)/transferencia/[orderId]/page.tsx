@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { isLocale, formatPrice, type Locale } from '@/i18n/config';
+import { isLocale, formatPriceWithCurrency, type Locale } from '@/i18n/config';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { getBankInfo, isBankInfoConfigured } from '@/lib/bank';
 import { TransferStatus } from '@/components/transfer-status';
@@ -81,7 +81,7 @@ export default async function TransferenciaPage({
           </div>
           <div>
             <span>{es ? 'Monto exacto' : 'Exact amount'}</span>
-            <strong className="mono">{formatPrice(order.amount_cents, locale)}</strong>
+            <strong className="mono">{formatPriceWithCurrency(order.amount_cents, locale)}</strong>
           </div>
         </div>
 

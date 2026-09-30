@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { formatPrice, type Locale } from '@/i18n/config';
+import { formatPrice, formatPriceWithCurrency, type Locale } from '@/i18n/config';
 
 type Download = {
   token: string;
@@ -177,7 +177,7 @@ export function TransferStatus({ orderId, locale, amountCents, labels }: Props) 
       </p>
       {error && <p className="small">{labels.sin_conexion}</p>}
       <p className="small" style={{ marginTop: 8, opacity: 0.7 }}>
-        {formatPrice(amountCents, locale)}
+        {formatPriceWithCurrency(amountCents, locale)}
       </p>
     </div>
   );

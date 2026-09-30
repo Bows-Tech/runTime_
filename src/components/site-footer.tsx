@@ -1,45 +1,65 @@
 import Link from 'next/link';
+import type { Locale } from '@/i18n/config';
 import type { Dictionary } from '@/i18n/dictionaries';
+import { getLegalInfo } from '@/lib/legal';
 
-export function SiteFooter({ dict }: { dict: Dictionary['footer'] }) {
+export function SiteFooter({
+  dict,
+  locale,
+}: {
+  dict: Dictionary['footer'];
+  locale: Locale;
+}) {
+  const es = locale === 'es';
+  const info = getLegalInfo();
+  const year = new Date().getFullYear();
+
   return (
     <footer>
       <div className="wrap">
         <div className="footer-grid">
           <div className="footer-about">
-            <Link href="/" className="logo">
+            <Link href={`/${locale}`} className="logo">
               runtime<span>_</span>
             </Link>
             <p>{dict.sobre}</p>
+            {info.name && <p className="footer-legal-id">{info.name}</p>}
           </div>
+
           <div>
             <h5>{dict.tienda}</h5>
             <ul>
               <li>
-                <Link href="#shop">{dict.todos}</Link>
+                <Link href={`/${locale}#shop`}>{dict.todos}</Link>
               </li>
               <li>
-                <Link href="#categorias">Categorías</Link>
+                <Link href={`/${locale}#categorias`}>{es ? 'Categorías' : 'Categories'}</Link>
               </li>
               <li>
-                <Link href="#proximamente">Próximamente</Link>
+                <Link href={`/${locale}#proximamente`}>
+                  {es ? 'Próximamente' : 'Coming soon'}
+                </Link>
               </li>
             </ul>
           </div>
+
           <div>
             <h5>{dict.soporte}</h5>
             <ul>
               <li>
-                <Link href="#">{dict.documentacion}</Link>
+                <Link href={`/${locale}#contacto`}>{es ? 'Contacto' : 'Contact'}</Link>
               </li>
               <li>
-                <Link href="#">{dict.licencias}</Link>
+                <Link href={`/${locale}/descargas`}>{es ? 'Mis descargas' : 'My downloads'}</Link>
               </li>
               <li>
-                <Link href="#contacto">{dict.todos === 'Todos los scripts' ? 'Contacto' : 'Contact'}</Link>
+                <Link href={`/${locale}/reembolsos`}>
+                  {es ? 'Reembolsos' : 'Refunds'}
+                </Link>
               </li>
             </ul>
           </div>
+
           <div>
             <h5>{dict.siguenos}</h5>
             <ul>
@@ -53,8 +73,31 @@ export function SiteFooter({ dict }: { dict: Dictionary['footer'] }) {
           </div>
         </div>
 
+        {/* Datos fiscales: muchos países los exigen visibles en el pie. */}
+        <div className="footer-legal">
+          <Link href={`/${locale}/terminos`}>{es ? 'Términos y condiciones' : 'Terms'}</Link>
+          <span>·</span>
+          <Link href={`/${locale}/privacidad`}>
+            {es ? 'Política de privacidad' : 'Privacy'}
+          </Link>
+          {info.ruc && (
+            <>
+              <span>·</span>
+              <span>{es ? 'RUC' : 'Tax ID'}: {info.ruc}</span>
+            </>
+          )}
+          {info.email && (
+            <>
+              <span>·</span>
+              <a href={`mailto:${info.email}`}>{info.email}</a>
+            </>
+          )}
+        </div>
+
         <div className="footer-bottom">
-          <p>© 2026 runtime_. {dict.derechos}</p>
+          <p>
+            © {year} {info.name || 'runtime_'}. {dict.derechos}
+          </p>
           <div className="socials">
             <Link href="#">github</Link>
             <Link href="#">twitter</Link>

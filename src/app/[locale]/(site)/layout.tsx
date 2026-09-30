@@ -3,6 +3,7 @@ import { isLocale } from '@/i18n/config';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 import { CartProvider } from '@/components/cart-provider';
+import { CookieBanner } from '@/components/cookie-banner';
 
 /**
  * Cromo del sitio público: cabecera con carrito y selector de idioma,
@@ -26,7 +27,8 @@ export default async function SiteLayout({
     <CartProvider>
       <SiteHeader locale={locale} dict={dict.nav} cartDict={dict.cart} />
       <main>{children}</main>
-      <SiteFooter dict={dict.footer} />
+      <SiteFooter locale={locale} dict={dict.footer} />
+      <CookieBanner locale={locale} />
     </CartProvider>
   );
 }
