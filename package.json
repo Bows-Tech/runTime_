@@ -1,0 +1,30 @@
+{
+  "name": "runtime-scripts",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "node scripts/test-admin-nav.mjs",
+    "db:types": "supabase gen types typescript --project-id $env:SUPABASE_PROJECT_ID > src/lib/supabase/database.types.ts"
+  },
+  "dependencies": {
+    "@paypal/react-paypal-js": "^8.8.3",
+    "@stripe/react-stripe-js": "^3.7.0",
+    "@stripe/stripe-js": "^7.3.1",
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.49.1",
+    "next": "^15.3.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "stripe": "^18.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "typescript": "^5.8.3"
+  }
+}

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>runtime_ — scripts que simplemente funcionan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="index.html" class="logo">runtime<span>_</span></a>
+
+    <input type="checkbox" id="menu-toggle" class="menu-toggle">
+    <ul class="nav-links">
+      <li><a href="index.html#shop">Shop</a></li>
+      <li><a href="index.html#categorias">Categorías</a></li>
+      <li><a href="index.html#proximamente">Próximamente</a></li>
+      <li><a href="index.html#contacto">Contacto</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="#" class="icon-btn">login</a>
+
+      <div class="cart-wrap">
+        <button type="button" id="cart-btn" class="icon-btn" aria-expanded="false" aria-controls="cart-panel">
+          carrito <span class="cart-count" id="cart-count">0</span>
+        </button>
+        <div class="cart-panel" id="cart-panel">
+          <div class="cart-panel-head">
+            <span>Tu carrito</span>
+            <span id="cart-item-count">0 items</span>
+          </div>
+          <div class="cart-items" id="cart-items">
+            <p class="cart-empty">Tu carrito está vacío.</p>
+          </div>
+          <div class="cart-panel-foot">
+            <div class="cart-subtotal"><span>Subtotal</span><span id="cart-subtotal">$0.00</span></div>
+            <button type="button" class="btn-primary" id="checkout-btn">Finalizar compra</button>
+          </div>
+        </div>
+      </div>
+
+      <label for="menu-toggle" class="menu-toggle-label">☰</label>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">scripts probados en producción</p>
+      <h1>Código que corre<br>a la primera<span class="dim">.</span></h1>
+      <p>Scripts de automatización, CLIs y utilidades listas para pegar en tu terminal. Sin dependencias fantasma, sin "funciona en mi máquina".</p>
+      <div class="hero-cta">
+        <a href="#shop" class="btn-primary">Explorar scripts</a>
+        <a href="#proximamente" class="btn-secondary">Ver lanzamientos</a>
+      </div>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="terminal-title">zsh — runtime_</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="prompt">$</span> <span class="cmd">runtime install backup-cli</span></div>
+        <div class="out">Descargando backup-cli@2.3.1...</div>
+        <div class="out">Verificando checksum... <span class="ok">ok</span></div>
+        <div class="out">Instalado en ./scripts/backup-cli</div>
+        <div><span class="prompt">$</span> <span class="cmd">backup-cli --run</span><span class="cursor"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="shop">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">catálogo</p>
+        <h2>Scripts disponibles</h2>
+      </div>
+      <a href="#" class="view-all">ver todo →</a>
+    </div>
+
+    <div class="grid">
+      <!-- PRODUCTS:START -->
+      <!-- Este bloque se regenera automáticamente al correr `node build.js`. No lo edites a mano: edita data/scripts.json -->
+      <div class="card">
+        <div class="card-tab"><span class="ext">.py</span><span class="lang">Python</span></div>
+        <div class="card-body">
+          <h3><a href="scripts/backup-cli.html">backup-cli</a></h3>
+          <p>Respaldos incrementales a S3 con cifrado y rotación automática.</p>
+          <div class="card-foot">
+            <span class="price">$12.00</span>
+            <button type="button" class="buy" data-name="backup-cli" data-price="12.00">comprar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-tab"><span class="ext">.sh</span><span class="lang">Bash</span></div>
+        <div class="card-body">
+          <h3><a href="scripts/server-init.html">server-init</a></h3>
+          <p>Aprovisiona un servidor Ubuntu limpio en menos de 3 minutos.</p>
+          <div class="card-foot">
+            <span class="price">$8.00</span>
+            <button type="button" class="buy" data-name="server-init" data-price="8.00">comprar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-tab"><span class="ext">.js</span><span class="lang">Node</span></div>
+        <div class="card-body">
+          <h3><a href="scripts/scrape-kit.html">scrape-kit</a></h3>
+          <p>Toolkit de scraping con reintentos, colas y export a CSV/JSON.</p>
+          <div class="card-foot">
+            <span class="price">$15.00</span>
+            <button type="button" class="buy" data-name="scrape-kit" data-price="15.00">comprar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-tab"><span class="ext">.py</span><span class="lang">Python</span></div>
+        <div class="card-body">
+          <h3><a href="scripts/log-watch.html">log-watch</a></h3>
+          <p>Monitorea logs en tiempo real y dispara alertas por patrón.</p>
+          <div class="card-foot">
+            <span class="price">$10.00</span>
+            <button type="button" class="buy" data-name="log-watch" data-price="10.00">comprar</button>
+          </div>
+        </div>
+      </div>
+      <!-- PRODUCTS:END -->
+    </div>
+  </div>
+</section>
+
+<section class="section" id="proximamente">
+  <div class="wrap split">
+    <div class="split-copy">
+      <p class="eyebrow">próximo lanzamiento</p>
+      <h2>Suite de automatización DevOps</h2>
+      <p>Un set de scripts para CI/CD, despliegues sin downtime y rollback automático. Ya en pruebas internas.</p>
+      <a href="#" class="btn-secondary">Avisarme cuando salga</a>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="terminal-title">devops-suite — preview</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="prompt">$</span> <span class="cmd">deploy --canary 10%</span></div>
+        <div class="out">Desplegando canary release...</div>
+        <div class="out">Salud del servicio: <span class="ok">nominal</span></div>
+        <div class="out">Escalando a 100%... <span class="ok">ok</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="categorias">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">explora por tipo</p>
+        <h2>Categorías</h2>
+      </div>
+    </div>
+
+    <div class="cats">
+      <a href="#" class="cat">
+        <p class="n">01</p>
+        <h4>Automatización</h4>
+        <p>Tareas repetitivas, resueltas.</p>
+      </a>
+      <a href="#" class="cat">
+        <p class="n">02</p>
+        <h4>Web Scraping</h4>
+        <p>Extracción de datos a escala.</p>
+      </a>
+      <a href="#" class="cat">
+        <p class="n">03</p>
+        <h4>DevOps</h4>
+        <p>CI/CD, despliegues, monitoreo.</p>
+      </a>
+      <a href="#" class="cat">
+        <p class="n">04</p>
+        <h4>Herramientas CLI</h4>
+        <p>Utilidades para tu terminal.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="newsletter" id="contacto">
+  <div class="wrap">
+    <p class="eyebrow">boletín</p>
+    <h2>Nuevos scripts, directo a tu correo</h2>
+    <p>Un aviso cuando publicamos algo nuevo. Cero spam.</p>
+    <form class="sub-form" id="newsletter-form">
+      <input type="email" id="newsletter-email" placeholder="tu@email.com" required>
+      <button type="submit" class="btn-primary">Suscribirme</button>
+    </form>
+    <p class="sub-success" id="newsletter-success">✓ Listo. Revisa tu correo para confirmar la suscripción.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <a href="index.html" class="logo">runtime<span>_</span></a>
+        <p>Scripts de automatización y herramientas de línea de comandos, escritos para producción.</p>
+      </div>
+      <div>
+        <h5>Tienda</h5>
+        <ul>
+          <li><a href="index.html#shop">Todos los scripts</a></li>
+          <li><a href="index.html#categorias">Categorías</a></li>
+          <li><a href="index.html#proximamente">Próximamente</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Soporte</h5>
+        <ul>
+          <li><a href="#">Documentación</a></li>
+          <li><a href="#">Licencias</a></li>
+          <li><a href="index.html#contacto">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Síguenos</h5>
+        <ul>
+          <li><a href="#">GitHub</a></li>
+          <li><a href="#">Twitter / X</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 runtime_. Todos los derechos reservados.</p>
+      <div class="socials">
+        <a href="#">github</a>
+        <a href="#">twitter</a>
+        <a href="#">discord</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/site.js"></script>
+</body>
+</html>
