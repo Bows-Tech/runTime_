@@ -572,6 +572,50 @@ footer {
   visibility: visible;
   transform: translateY(0);
 }
+
+/* En pantallas estrechas el panel se ancla al viewport, no al boton, y
+   toma el ancho disponible. Con `width: 320px` fijo se salia por la
+   izquierda en pantallas de 320px, dejando el boton de pagar fuera. */
+@media (max-width: 420px) {
+  .cart-wrap {
+    position: static;
+  }
+  .cart-panel {
+    position: fixed;
+    top: auto;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    width: auto;
+    max-width: 420px;
+    margin: 0 auto;
+    max-height: 72vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: 12px;
+    /* Sube desde abajo, que es la direccion natural en un movil.
+       Por encima del aviso de cookies (200): si el carrito queda debajo,
+       el banner de consentimiento tapa justo el boton de pagar. */
+    transform: translateY(12px);
+    z-index: 300;
+  }
+  .cart-panel.open {
+    transform: translateY(0);
+  }
+  .cart-items {
+    max-height: 40vh;
+    overflow-y: auto;
+  }
+  /* Zona de toque comoda para el aspa de cerrar. */
+  .cart-remove,
+  .checkout-head .cart-remove {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
 .cart-panel-head {
   display: flex;
   justify-content: space-between;
@@ -727,6 +771,19 @@ input:focus-visible {
   .wrap {
     padding: 0 20px;
   }
+  /* La barra tiene logo + idioma + login + carrito + menu. Con 22px de
+     separacion no caben en 360px y el boton de menu se salia de la
+     pantalla. */
+  .nav-actions {
+    gap: 10px;
+  }
+  .nav-actions .icon-btn {
+    font-size: 12px;
+  }
+  .lang-select select {
+    padding: 5px 4px;
+    font-size: 11px;
+  }
   .nav-links {
     position: fixed;
     inset: 68px 0 0 0;
@@ -767,6 +824,24 @@ input:focus-visible {
   }
 }
 
+/* Pantallas muy estrechas (320-380px): el texto "carrito" y el enlace
+   "login" son lo que empuja el menu fuera. El login sigue estando
+   accesible desde el panel de la web y no aporta nada en la barra. */
+@media (max-width: 400px) {
+  .nav-actions .auth-link {
+    display: none;
+  }
+  .cart-btn-label {
+    display: none;
+  }
+  .nav-actions {
+    gap: 8px;
+  }
+  .logo {
+    font-size: 17px;
+  }
+}
+
 /* ============================================================
    IDIOMA
    ============================================================ */
@@ -790,6 +865,9 @@ input:focus-visible {
   border-radius: var(--radius);
   padding: 6px 8px;
   cursor: pointer;
+  /* Sin esto el <select> se ensancha segun la opcion mas larga
+     ("Español"), y empuja el boton de menu fuera de pantalla. */
+  width: auto;
 }
 .lang-select select:hover {
   color: var(--text);

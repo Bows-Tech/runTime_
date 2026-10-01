@@ -50,20 +50,29 @@ export function SiteHeader({
             <span className="sr-only">Idioma</span>
             <select
               value={locale}
+              title={localeNames[locale]}
+              aria-label="Idioma / Language"
               onChange={(event) => {
                 const next = event.target.value;
                 if (isLocale(next)) setLocale(next);
               }}
             >
+              {/* Códigos cortos a propósito: "Español" es lo bastante
+                  ancho como para sacar el menú fuera de la pantalla en
+                  móvil. El nombre completo queda en el title. */}
               {locales.map((code) => (
                 <option key={code} value={code}>
-                  {localeNames[code]}
+                  {code.toUpperCase()}
                 </option>
               ))}
             </select>
           </label>
 
-          <AuthNavLink href={`${base}/login`} label={dict.login} locale={locale} />
+          <AuthNavLink
+            href={`${base}/login`}
+            label={dict.login}
+            locale={locale}
+          />
 
           <CartButton
             dict={cartDict}

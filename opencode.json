@@ -3,7 +3,7 @@
     "servers": {
       "supabase": {
         "type": "remote",
-        "url": "https://mcp.supabase.com/mcp?project_ref=namevevlzbhanatmvrzz"
+        "url": "https://mcp.supabase.com/mcp?project_ref=namevevlzbhanatmvrzz&read_only=true"
       }
     }
   }

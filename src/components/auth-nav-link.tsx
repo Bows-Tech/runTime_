@@ -53,14 +53,14 @@ export function AuthNavLink({
 
   if (isAdmin) {
     return (
-      <Link href={`/${locale}/admin`} className="icon-btn">
+      <Link href={`/${locale}/admin`} className="icon-btn auth-link">
         admin
       </Link>
     );
   }
 
   return (
-    <Link href={href} className="icon-btn">
+    <Link href={href} className="icon-btn auth-link">
       {label}
     </Link>
   );

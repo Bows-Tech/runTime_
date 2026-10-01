@@ -32,7 +32,8 @@ export function CartButton({
         aria-controls="cart-panel"
         onClick={() => setOpen((v) => !v)}
       >
-        {navLabel} <span className="cart-count">{count}</span>
+        <span className="cart-btn-label">{navLabel}</span>{' '}
+        <span className="cart-count">{count}</span>
       </button>
 
       <div className={open ? 'cart-panel open' : 'cart-panel'} id="cart-panel">
