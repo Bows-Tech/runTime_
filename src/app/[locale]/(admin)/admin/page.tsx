@@ -1,6 +1,7 @@
 import { getDictionary } from '@/i18n/dictionaries';
 import { isLocale, formatPrice, type Locale } from '@/i18n/config';
 import { createClient } from '@/lib/supabase/server';
+import { TelegramTestButton } from '@/components/admin/telegram-test-button';
 
 export const dynamic = 'force-dynamic';
 
@@ -77,6 +78,22 @@ export default async function AdminDashboardPage({
             <dd>{subs?.length ?? 0}</dd>
           </div>
         </dl>
+      </div>
+
+      <div className="admin-card">
+        <h3>{locale === 'es' ? 'Avisos de venta' : 'Sale alerts'}</h3>
+        <p className="telegram-test__hint">
+          {locale === 'es'
+            ? 'Te aviso por Telegram cuando un comprador sube el comprobante, que es lo que necesita tu confirmación.'
+            : 'I notify you on Telegram when a buyer uploads the receipt, since that is what needs your confirmation.'}
+        </p>
+        <TelegramTestButton
+          labels={{
+            telegramProbar: locale === 'es' ? 'Probar aviso' : 'Test alert',
+            telegramEnviado: locale === 'es' ? 'Aviso enviado' : 'Alert sent',
+            telegramFallo: locale === 'es' ? 'No se pudo enviar' : 'Could not send',
+          }}
+        />
       </div>
     </div>
   );

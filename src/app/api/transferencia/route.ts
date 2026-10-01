@@ -1,5 +1,7 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, after } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { getSiteUrl } from '@/lib/site';
+import { notifyNewReceipt } from '@/lib/telegram';
 
 export const dynamic = 'force-dynamic';
 
@@ -178,6 +180,19 @@ export async function POST(request: Request) {
     await supabase.from('orders').update({ status: 'fallido' }).eq('id', order.id);
     return NextResponse.json({ error: receiptError.message }, { status: 500 });
   }
+
+  // Aviso al admin, ahora que la orden y el comprobante ya existen.
+  // `after` corre una vez enviada la respuesta: el comprador no espera a
+  // Telegram, y si el aviso falla la venta sigue siendo válida.
+  after(() =>
+    notifyNewReceipt({
+      orderId: order.id,
+      email,
+      amountCents,
+      scripts: sellable.map((s) => s.name),
+      siteUrl: getSiteUrl(),
+    }).catch(() => false),
+  );
 
   return NextResponse.json({ orderId: order.id, amountCents, locale });
 }

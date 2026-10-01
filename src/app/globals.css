@@ -771,6 +771,18 @@ input:focus-visible {
   .wrap {
     padding: 0 20px;
   }
+  /* La barra superior en escritorio es cristal (88% opaco + desenfoque).
+     En movil, al desplazar, el contenido se transparentaba a traves y
+     se leia como sucio. Aqui es totalmente opaca. */
+  header {
+    background: var(--bg);
+    backdrop-filter: none;
+  }
+  /* Estado cerrado: invisible de verdad. `transform` solo MUEVE, no
+     oculta: sin `visibility: hidden` los enlaces seguian visibles y
+     pulsables al entrar en movil, flotando sobre el contenido.
+     Se ocultan por tres vias a la vez (visibility, opacity y pointer)
+     para que el cierre no dependa de una sola propiedad. */
   .nav-links {
     position: fixed;
     inset: 68px 0 0 0;
@@ -780,11 +792,21 @@ input:focus-visible {
     padding: 30px 20px;
     gap: 22px;
     transform: translateX(100%);
-    transition: transform 0.2s;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      transform 0.2s,
+      opacity 0.2s,
+      visibility 0.2s;
     border-top: 1px solid var(--border);
+    z-index: 90;
   }
   .menu-toggle:checked ~ .nav-links {
     transform: translateX(0);
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
   }
   .menu-toggle-label {
     display: block;
@@ -1246,6 +1268,33 @@ input:focus-visible {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 16px;
+}
+.telegram-test {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.telegram-test__hint {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin: 0 0 14px;
+  max-width: 60ch;
+}
+.telegram-test__ok {
+  font-family: var(--mono);
+  font-size: 12px;
+  /* Mismo verde que "confirmar venta": el verde de este panel significa
+     "llegó y esta bien". */
+  color: #7ee787;
+}
+.telegram-test__error {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: #ff6b6b;
+  /* El error puede venir de una variable de entorno ausente: es largo y
+     no debe empujar el boton fuera de la tarjeta en movil. */
+  overflow-wrap: anywhere;
 }
 .admin-stats dt {
   font-family: var(--mono);
