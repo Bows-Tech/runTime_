@@ -771,19 +771,6 @@ input:focus-visible {
   .wrap {
     padding: 0 20px;
   }
-  /* La barra tiene logo + idioma + login + carrito + menu. Con 22px de
-     separacion no caben en 360px y el boton de menu se salia de la
-     pantalla. */
-  .nav-actions {
-    gap: 10px;
-  }
-  .nav-actions .icon-btn {
-    font-size: 12px;
-  }
-  .lang-select select {
-    padding: 5px 4px;
-    font-size: 11px;
-  }
   .nav-links {
     position: fixed;
     inset: 68px 0 0 0;
@@ -824,24 +811,6 @@ input:focus-visible {
   }
 }
 
-/* Pantallas muy estrechas (320-380px): el texto "carrito" y el enlace
-   "login" son lo que empuja el menu fuera. El login sigue estando
-   accesible desde el panel de la web y no aporta nada en la barra. */
-@media (max-width: 400px) {
-  .nav-actions .auth-link {
-    display: none;
-  }
-  .cart-btn-label {
-    display: none;
-  }
-  .nav-actions {
-    gap: 8px;
-  }
-  .logo {
-    font-size: 17px;
-  }
-}
-
 /* ============================================================
    IDIOMA
    ============================================================ */
@@ -865,9 +834,6 @@ input:focus-visible {
   border-radius: var(--radius);
   padding: 6px 8px;
   cursor: pointer;
-  /* Sin esto el <select> se ensancha segun la opcion mas larga
-     ("Español"), y empuja el boton de menu fuera de pantalla. */
-  width: auto;
 }
 .lang-select select:hover {
   color: var(--text);
