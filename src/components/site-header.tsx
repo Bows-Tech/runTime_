@@ -69,6 +69,7 @@ export function SiteHeader({
             dict={cartDict}
             navLabel={dict.carrito}
             removeLabel={cartDict.quitar}
+            closeLabel={cartDict.cerrar}
             locale={locale}
             paypalReady={paypalReady}
           />

@@ -126,6 +126,11 @@ header {
   align-items: center;
   gap: 6px;
 }
+/* El icono sustituye al texto solo en movil. En escritorio se usa el
+   texto, que es mas claro. */
+.auth-nav__icon {
+  display: none;
+}
 .icon-btn:hover {
   color: var(--white);
 }
@@ -560,6 +565,10 @@ footer {
   box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.7);
   opacity: 0;
   visibility: hidden;
+  /* Sin esto el panel cerrado seguia recibiendo toques: estaba invisible
+     pero `pointer-events` se heredaba como auto, y en movil (donde el
+     panel se ancla abajo) se comia los toques del contenido de debajo. */
+  pointer-events: none;
   transform: translateY(-6px);
   transition:
     opacity 0.15s,
@@ -570,7 +579,61 @@ footer {
 .cart-panel.open {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
   transform: translateY(0);
+}
+
+/* Capa oscura detras del panel. En movil es lo que deja claro que el
+   contenido de debajo esta bloqueado, y da un area grande para cerrar
+   tocando fuera. */
+.cart-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  z-index: 55;
+  animation: cart-fade 0.15s ease;
+}
+@keyframes cart-fade {
+  from {
+    opacity: 0;
+  }
+}
+.cart-panel-head-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.cart-panel-count {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.cart-close {
+  font-family: var(--mono);
+  font-size: 20px;
+  line-height: 1;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+.cart-close:hover {
+  color: var(--white);
+  border-color: var(--text-faint);
 }
 
 /* En pantallas estrechas el panel se ancla al viewport, no al boton, y
@@ -606,14 +669,32 @@ footer {
     max-height: 40vh;
     overflow-y: auto;
   }
-  /* Zona de toque comoda para el aspa de cerrar. */
+  /* Zona de toque comoda para el aspa de quitar y el de cerrar.
+     Antes el selector era `.checkout-head .cart-remove`, clase que no
+     existe en este componente: la regla nunca llego a aplicarse. */
   .cart-remove,
-  .checkout-head .cart-remove {
+  .cart-close {
     min-width: 44px;
     min-height: 44px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+  }
+  /* Ultimo recurso para 320px: aqui la barra sigue sin caber con el logo
+     a 16px. Se recorta el texto del carrito a "cart" y se estrecha mas
+     el selector de idioma. El menu y el carrito siguen siendo pulsables,
+     que es lo que no se puede sacrificar. */
+  .nav-actions {
+    gap: 8px;
+  }
+  .logo {
+    font-size: 15px;
+  }
+  .lang-select select {
+    max-width: 52px;
+  }
+  .icon-btn {
+    font-size: 12px;
   }
 }
 .cart-panel-head {
@@ -770,6 +851,39 @@ input:focus-visible {
 @media (max-width: 680px) {
   .wrap {
     padding: 0 20px;
+  }
+  /* Medido: el bloque de acciones mide 414px y el limite util a 390px de
+     pantalla es 375px, asi que el boton de menu se salia. El texto
+     "Iniciar sesion" ocupa ~90px de esos 414. */
+  /* Este gap va aqui y no en `.nav` a secas: con `space-between` la barra
+     ya se reparte bien en escritorio, y un gap global solo servia para
+     separar el logo del menu en tablet. */
+  .nav {
+    gap: 20px;
+  }
+  .nav-actions {
+    gap: 12px;
+  }
+  .auth-nav__full {
+    display: none;
+  }
+  .auth-nav__icon {
+    display: inline;
+  }
+  .auth-nav {
+    min-width: 32px;
+    min-height: 32px;
+    justify-content: center;
+  }
+  .lang-select select {
+    /* "Espanol" completo no cabe; basta el codigo de dos letras. */
+    max-width: 62px;
+  }
+  /* A 320px seguia faltando sitio. El logo de 88px es la pieza mas
+     grande de la barra, asi que se encoge en vez de sacrificar los
+     controles: el usuario necesita el menu y el carrito, no la marca. */
+  .logo {
+    font-size: 16px;
   }
   /* La barra superior en escritorio es cristal (88% opaco + desenfoque).
      En movil, al desplazar, el contenido se transparentaba a traves y

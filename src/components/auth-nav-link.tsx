@@ -59,9 +59,23 @@ export function AuthNavLink({
     );
   }
 
+  // "Iniciar sesión" mide ~90px y en movil no cabia junto al selector de
+  // idioma y el carrito: empujaba el boton de menu fuera de la pantalla,
+  // dejando al usuario sin acceso a la navegacion. En movil solo se
+  // muestra el icono; el texto sigue en el atributo title y aria-label.
   return (
-    <Link href={href} className="icon-btn">
-      {label}
+    <Link
+      href={href}
+      className="icon-btn auth-nav"
+      title={label}
+      aria-label={label}
+    >
+      <span aria-hidden="true" className="auth-nav__full">
+        {label}
+      </span>
+      <span aria-hidden="true" className="auth-nav__icon">
+        &#128100;
+      </span>
     </Link>
   );
 }
